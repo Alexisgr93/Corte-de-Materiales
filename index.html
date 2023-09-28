@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<title>Cálculo de sobrante de material</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+	<link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
+	
+	<style>
+		html, body, .conteiner{
+			height: 100%;
+		}
+
+
+		header{
+			height: 150px;
+			width: 100%;
+		}
+		section{
+			height: 80%;
+		}
+		#footer {
+			margin-top: 10px;
+		}
+		.resultado-slide {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			text-align: center;
+			color: white;
+			width: 100%;
+		}
+
+		.resultado-slide h5 {
+			font-size: 24px;
+			margin-bottom: 10px;
+		}
+
+		.resultado-slide p {
+			font-size: 18px;
+		}
+
+		
+
+		.carousel-item.active .resultado-slide.active {
+			display: block;
+		}
+
+		.carousel-item.active .resultado-slide img {
+			width: 100%;
+			height: 150px;
+			object-fit: cover;
+		}
+
+		.resultado-slide {
+        /* ... otros estilos ... */
+        padding-top: 10px;
+        padding-bottom: 10px;
+		height: 100%; /* Agrega esta línea para ocupar toda la altura del slide */
+    	display: flex; /* Agrega esta línea para usar flexbox */
+    	flex-direction: column; /* Agrega esta línea para alinear verticalmente el contenido */
+    	justify-content: center; /* Agrega esta línea para centrar verticalmente el contenido */
+    }
+	.scroll-container {
+	overflow-y: scroll;
+	height: 100%;
+	}
+	
+	#color-carta {
+	position: relative;
+	top: 5%;
+	left: 50%;
+	transform: translate(-50%, 0%);
+	}
+	.container {
+            margin-top: 50px;
+        }
+
+        .card-container {
+            position: absolute;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            opacity: 1;
+            transition: opacity 0.3s;
+        }
+
+        .card-container.show {
+            opacity: 1;
+        }
+
+	</style>
+</head>
+
+<body>
+	<header>
+		<div id="carouselExampleIndicators" class="carousel slide">
+			<div class="carousel-indicators">
+			  <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+			  <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+			  
+			</div>
+
+			<div class="carousel-inner">
+
+			  	<div class="carousel-item active">
+				
+					<!-- <img src="./img/inicio.jpg" class="d-block mw-100" style="width: 100%; height: 150px" alt="..."> -->
+					<img class="d-block mw-100" style="width: 100%; height: 150px; background-color: rgb(178, 186, 187);">
+						<!--id=resultado-slide-0 va a cambiar el color del background si es negativo o positivo-->
+						<div class="resultado-slide active" id="resultado-slide-0">
+							<h5>Resultado:</h5>
+							<p id="resultado-texto-parte1"></p>
+						</div>
+						
+						
+
+				</div>
+
+				<div class="carousel-item">
+				
+					<img class="d-block mw-100" style="width: 100%; height: 150px; background-color: rgb(178, 186, 187);">
+					<!-- <img src="./img/bien.jpg" class="d-block mw-100" style="width: 100%; height: 150px" alt="..."> -->
+					
+						<div class="resultado-slide active" id="resultado-slide-1">
+							<!-- <h5>Resultado:</h5> -->
+							<div class="scroll-container">
+								<div class="resultado-contenido" id="resultado-contenido-0">
+									<p id="resultado-texto-parte1"></p>
+										<div class="materiales-container">
+											<ul id="materiales-list">
+												<p id="resultado-texto-parte2"></p>
+												<p id="resultado-texto-materiales"></p>
+												<!-- Aquí se mostrarán los materiales a cortar -->
+											</ul>
+										</div>
+								</div>
+							</div>
+						</div>
+				</div>
+
+			</div>
+
+			<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+			  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+			  <span class="visually-hidden">Previous</span>
+			</button>
+			<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+			  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+			  <span class="visually-hidden">Next</span>
+			</button>
+		</div>
+	</header>
+	<section>
+		<table class="table">
+						
+			<thead class="table-primary text-center">
+				<tr>
+					<th colspan="2">Calculadora de Sobrante de Material:</th>
+				</tr>
+			</thead>
+			<thead class="table-ligh">
+				<tr>
+					<th><label for="largo" class="form-label">Largo de material:</label>
+					</th>
+					<td><input type="number" class="form-control" id="largo" name="largo" placeholder="Valor en mm"></th>
+					</td>
+				</tr>
+			</thead>
+
+			<thead class="table-ligh">
+				<tr>
+					<th><label for="corte" class="form-label">Corte de la herramienta:</label>
+					</th>
+					<td><input type="number" class="form-control" id="corte" name="corte" placeholder="Valor en mm"></th>
+					</td>
+				</tr>
+			</thead>
+
+			
+		</table>
+
+		<form>
+
+			<table class="table" class="table-primary">
+						
+				<thead class="table-primary text-center" >
+					<tr>
+						<th colspan="2">Ingrese el Largo y la Cantidad de piezas a cortar:</th>
+					</tr>
+				</thead>
+			
+				<thead class="table table-primary text-center" id="tabla-materiales">
+					<tr>
+						<th>Material</th>
+						<th>Cantidad</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<div class="mb-3">
+							<td><input type="number" class="form-control" name="material[]" placeholder="Valor en mm"/></td>
+						</div>
+						<div class="mb-3"></div>
+							<td><input type="number" class="form-control" name="cantidad[]" placeholder="Cantidad a cortar"/></td>
+						</div>
+					</tr>
+				</tbody>
+			</table>
+
+
+			<div class="container text-center">
+				<div class="btn-group btn-group-mn" role="group" aria-label="Basic example">
+				<button type="button" onclick="agregarMaterial()" class="btn btn-secondary">Agregar material</button>
+				<button type="button" value="Calcular" onclick="capturarDatos()" class="btn btn-success">Calcular Resultado</button>
+				<button type="button" onclick="reiniciarAplicacion()" class="btn btn-danger">Reiniciar aplicación</button>
+				<button type="button"  onclick="mostrarDetalle(0)" class="btn btn-primary">Mostrar Resultados</button>
+				</div>
+			</div>
+		</form>
+		<div class="card-container d-none" id="card-container-0">
+			<div class="card mb-3" style="max-width: 18rem;" id="color-carta">
+				<div class="card-header">Resultados</div>
+				<div class="card-body">
+					<p class="card-text" id="cartas-resultantes"></p>
+				</div>
+			</div>
+		</div>
+	</section>
+	<div id="footer"></div>
+
+	
+	
+
+  
+  
+
+<!--<div id="resultado"></div>-->
+
+<script>
+
+function mostrarDetalle(slideIndex) {
+  var resultadoSlide = document.getElementById("resultado-slide-" + slideIndex);
+  resultadoSlide.classList.toggle("active");
+
+  var cardContainer = document.getElementById("card-container-" + slideIndex);
+  cardContainer.classList.toggle("d-none");
+}
+
+
+function agregarMaterial() {
+	var tabla = document.getElementById("tabla-materiales");
+	var fila = tabla.insertRow();
+	var celdaMaterial = fila.insertCell();
+	var celdaCantidad = fila.insertCell();
+	celdaMaterial.innerHTML = '<input type="text" name="material[]" />';
+	celdaCantidad.innerHTML = '<input type="number" name="cantidad[]" />';
+}
+
+function capturarDatos() {
+	var largo = document.getElementById("largo").value;
+	var corte = document.getElementById("corte").value;
+	var materiales = document.getElementsByName("material[]");
+	var cantidades = document.getElementsByName("cantidad[]");
+
+	//alert si no ingresa datos antes de calcular
+	if (largo === "" || corte === "" || materiales.length === 0 || cantidades.length === 0) {
+        alert("Por favor, complete todos los datos.");
+        return;
+    }
+	//alert si no ingresa datos en materiales y cantidades
+	for (var i = 0; i < materiales.length; i++) {
+        if (materiales[i].value === "" || cantidades[i].value === "") {
+            alert("Por favor, complete todos los datos.");
+            return;
+        }
+    }
+	
+	var totalMateriales = 0;
+	var mensajeMateriales = "";
+	for (var i = 0; i < materiales.length; i++) {
+		var material = parseFloat(cantidades[i].value) * (parseFloat(materiales[i].value) + parseFloat(corte));
+		totalMateriales += material;
+
+		// Generar mensaje de los materiales a cortar
+        mensajeMateriales += "Largo del Material: " + materiales[i].value + " - Cantidad: " + cantidades[i].value + "<br>";
+	}
+	
+
+	var sobrante = parseFloat(largo) - totalMateriales;
+
+	var mensaje = "Largo ingresado: " + largo + "\nCorte de herramienta: " + corte;
+	mensaje += "\nMateriales a cortar:\n";
+	for (var i = 0; i < materiales.length; i++) {
+		mensaje += "Largo del Material: " + materiales[i].value + " - " + "Cantidad: " + cantidades[i].value + "\n";
+	}
+
+	if (sobrante < 0) {
+        mensaje += "El valor del material sobrante es negativo: " + sobrante;
+    } else {
+        mensaje += "Sobrante de material: " + sobrante;
+    }
+
+
+	var resultadoSlide0 = document.getElementById("resultado-slide-0");
+	var resultadoParte1 = document.getElementById("resultado-texto-parte1");
+
+	var resultadoSlide1 = document.getElementById("resultado-slide-1");
+	var resultadoParte2 = document.getElementById("resultado-texto-parte2");
+	var resultadoMateriales = document.getElementById("resultado-texto-materiales");
+	
+	var resultadosCartas = document.getElementById("cartas-resultantes");
+	var colorCartas = document.getElementById("color-carta");
+
+    if (sobrante < 0) {
+        resultadoSlide0.style.backgroundColor = "rgb(192, 57, 43)";
+		resultadoSlide1.style.backgroundColor = "rgb(192, 57, 43)";
+		colorCartas.style.backgroundColor = "rgb(192, 57, 43)";
+		colorCartas.style.color = "rgb(255,255,255)";
+		
+    } else {
+        resultadoSlide0.style.backgroundColor = "rgb(30, 132, 73)";
+		resultadoSlide1.style.backgroundColor = "rgb(30, 132, 73)";
+		colorCartas.style.backgroundColor = "rgb(30, 132, 73)";
+		colorCartas.style.color = "rgb(255,255,255)";
+    }
+	
+	resultadoParte1.innerHTML = "Largo ingresado: " + largo + "<br>Corte de herramienta: " + corte + "<br>Sobrante de material: " + sobrante;
+	// Después de generar el mensaje de materiales a cortar
+
+resultadoMateriales.innerHTML = "Materiales a cortar:<br>" + mensajeMateriales;
+	//document.getElementById("resultado-texto-parte2").innerHTML = mensaje.replace(/\n/g, "<br>");
+	//carta
+	resultadosCartas.innerHTML = "Largo ingresado: " + largo + "<br>Corte de herramienta: " + corte + "<br>Materiales a cortar: <br>" + mensajeMateriales + "Sobrante de material: " + sobrante;
+
+	alert(mensaje);
+	//document.getElementById("resultado").innerHTML = "El sobrante de material es: " + sobrante;
+	document.getElementById("cartas-resultantes").innerHTML = mensaje;
+
+
+}
+
+
+
+function crearFilaTabla() {
+    var fila = document.createElement("tr");
+    fila.classList.add("table-light"); // clase Bootstrap para filas de tabla claras
+
+    var celdaMaterial = document.createElement("td");
+    celdaMaterial.innerHTML = '<input type="number" class="form-control" name="material[]" placeholder="Valor en mm"/>';
+
+    var celdaCantidad = document.createElement("td");
+    celdaCantidad.innerHTML = '<input type="number" class="form-control" name="cantidad[]" placeholder="Cantidad a cortar"/>';
+
+    fila.appendChild(celdaMaterial);
+    fila.appendChild(celdaCantidad);
+
+    return fila;
+}
+
+function agregarMaterial() {
+    var tabla = document.getElementById("tabla-materiales");
+    var fila = crearFilaTabla();
+    tabla.appendChild(fila);
+}
+
+function reiniciarAplicacion() {
+  location.reload(); // Recarga la página actual
+}
+
+</script>
+<script src="./node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
+</body>
+</html>
