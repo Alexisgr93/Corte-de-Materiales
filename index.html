@@ -7,54 +7,55 @@
 	
 	<link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
 	
-	<style>
-		html, body, .conteiner{
-			height: 100%;
-		}
+<style>
+	html, body, .conteiner{
+		height: 100%;
+	}
 
 
-		header{
-			height: 150px;
-			width: 100%;
-		}
-		section{
-			height: 80%;
-		}
-		#footer {
-			margin-top: 10px;
-		}
-		.resultado-slide {
-			position: absolute;
-			top: 50%;
-			left: 50%;
-			transform: translate(-50%, -50%);
-			text-align: center;
-			color: white;
-			width: 100%;
-		}
+	header{
+		height: 150px;
+		width: 100%;
+	}
+	
+	section{
+		height: 80%;
+	}
 
-		.resultado-slide h5 {
-			font-size: 24px;
-			margin-bottom: 10px;
-		}
+	#footer {
+		margin-top: 10px;
+	}
 
-		.resultado-slide p {
-			font-size: 18px;
-		}
+	.resultado-slide {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		text-align: center;
+		color: white;
+		width: 100%;
+	}
 
-		
+	.resultado-slide h5 {
+		font-size: 24px;
+		margin-bottom: 10px;
+	}
 
-		.carousel-item.active .resultado-slide.active {
-			display: block;
-		}
+	.resultado-slide p {
+		font-size: 18px;
+	}
 
-		.carousel-item.active .resultado-slide img {
-			width: 100%;
-			height: 150px;
-			object-fit: cover;
-		}
+	.carousel-item.active .resultado-slide.active {
+		display: block;
+	}
 
-		.resultado-slide {
+	.carousel-item.active .resultado-slide img {
+		width: 100%;
+		height: 150px;
+		object-fit: cover;
+	}
+
+	.resultado-slide {
         /* ... otros estilos ... */
         padding-top: 10px;
         padding-bottom: 10px;
@@ -63,36 +64,37 @@
     	flex-direction: column; /* Agrega esta línea para alinear verticalmente el contenido */
     	justify-content: center; /* Agrega esta línea para centrar verticalmente el contenido */
     }
+
 	.scroll-container {
-	overflow-y: scroll;
-	height: 100%;
+		overflow-y: scroll;
+		height: 100%;
 	}
 	
 	#color-carta {
-	position: relative;
-	top: 5%;
-	left: 50%;
-	transform: translate(-50%, 0%);
+		position: relative;
+		top: 5%;
+		left: 50%;
+		transform: translate(-50%, 0%);
 	}
 	.container {
-            margin-top: 50px;
-        }
+        margin-top: 50px;
+    }
 
-        .card-container {
-            position: absolute;
-            top: 40%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 9999;
-            opacity: 1;
-            transition: opacity 0.3s;
-        }
+    .card-container {
+        position: absolute;
+        top: 40%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 9999;
+        opacity: 1;
+        transition: opacity 0.3s;
+    }
 
-        .card-container.show {
-            opacity: 1;
-        }
+    .card-container.show {
+        opacity: 1;
+    }
 
-	</style>
+</style>
 </head>
 
 <body>
@@ -221,9 +223,11 @@
 				</div>
 			</div>
 		</form>
-		<div class="card-container d-none" id="card-container-0">
+		<div class="card-container" id="card-container-0" style="display: none;">
 			<div class="card mb-3" style="max-width: 18rem;" id="color-carta">
-				<div class="card-header">Resultados</div>
+				<div class="card-header">
+					<span style="float: right; cursor: pointer;" onclick="cerrarCarta()">X</span>
+					Resultados</div>
 				<div class="card-body">
 					<p class="card-text" id="cartas-resultantes"></p>
 				</div>
@@ -241,14 +245,31 @@
 <!--<div id="resultado"></div>-->
 
 <script>
+var resultadosVisible = false;
+
+function cerrarCarta() {
+  var cardContainer = document.getElementById("card-container-0");
+  cardContainer.style.display = "none";
+  resultadosVisible = false;
+}
 
 function mostrarDetalle(slideIndex) {
   var resultadoSlide = document.getElementById("resultado-slide-" + slideIndex);
   resultadoSlide.classList.toggle("active");
 
   var cardContainer = document.getElementById("card-container-" + slideIndex);
-  cardContainer.classList.toggle("d-none");
+
+  if (!resultadosVisible) {
+    cardContainer.style.display = "block";
+    resultadosVisible = true;
+  } else {
+    cardContainer.style.display = "none";
+    resultadosVisible = false;
+  }
+  
+  
 }
+
 
 
 function agregarMaterial() {
@@ -292,10 +313,10 @@ function capturarDatos() {
 
 	var sobrante = parseFloat(largo) - totalMateriales;
 
-	var mensaje = "Largo ingresado: " + largo + "\nCorte de herramienta: " + corte;
-	mensaje += "\nMateriales a cortar:\n";
+	var mensaje = "Largo ingresado: " + largo + "<br>Corte de herramienta: " + corte;
+	mensaje += "<br>Materiales a cortar:<br>";
 	for (var i = 0; i < materiales.length; i++) {
-		mensaje += "Largo del Material: " + materiales[i].value + " - " + "Cantidad: " + cantidades[i].value + "\n";
+		mensaje += "Largo del Material: " + materiales[i].value + " - " + "Cantidad: " + cantidades[i].value + "<br>";
 	}
 
 	if (sobrante < 0) {
@@ -336,7 +357,7 @@ resultadoMateriales.innerHTML = "Materiales a cortar:<br>" + mensajeMateriales;
 	//carta
 	resultadosCartas.innerHTML = "Largo ingresado: " + largo + "<br>Corte de herramienta: " + corte + "<br>Materiales a cortar: <br>" + mensajeMateriales + "Sobrante de material: " + sobrante;
 
-	alert(mensaje);
+	//alert(mensaje);
 	//document.getElementById("resultado").innerHTML = "El sobrante de material es: " + sobrante;
 	document.getElementById("cartas-resultantes").innerHTML = mensaje;
 
