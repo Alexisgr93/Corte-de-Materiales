@@ -222,7 +222,7 @@
 				<button type="button" onclick="agregarMaterial()" class="btn btn-secondary">Agregar material</button>
 				<button type="button" value="Calcular" onclick="capturarDatos()" class="btn btn-success">Calcular Resultado</button>
 				<button type="button" onclick="reiniciarAplicacion()" class="btn btn-danger">Reiniciar aplicación</button>
-				<button type="button"  onclick="mostrarDetalle(0)" class="btn btn-primary">Mostrar Resultados</button>
+				<button type="button"  onclick="mostrarDetalle(0)" class="btn btn-outline-primary">Mostrar Resultados</button>
 				</div>
 			</div>
 		</form>
@@ -367,6 +367,9 @@ resultadoMateriales.innerHTML = "Materiales a cortar:<br>" + mensajeMateriales;
 	document.getElementById("cartas-resultantes").innerHTML = mensaje;
 
 	calculoRealizado = true;
+	// Después de realizar el cálculo, cambia la clase del botón
+    var botonMostrarResultados = document.querySelector('.btn.btn-outline-primary');
+    botonMostrarResultados.classList.replace('btn-outline-primary', 'btn-primary'); // Cambia la clase al color actual
 }
 
 
@@ -385,12 +388,19 @@ function crearFilaTabla() {
     fila.appendChild(celdaCantidad);
 
     return fila;
+
 }
 
 function agregarMaterial() {
     var tabla = document.getElementById("tabla-materiales");
     var fila = crearFilaTabla();
     tabla.appendChild(fila);
+	// Después de agregar material, cambia la clase del botón a btn-outline-primary
+    var botonMostrarResultados = document.querySelector('.btn.btn-primary');
+    if (botonMostrarResultados) {
+        botonMostrarResultados.classList.replace('btn-primary', 'btn-outline-primary');
+    }
+	calculoRealizado = false;
 }
 
 function reiniciarAplicacion() {
