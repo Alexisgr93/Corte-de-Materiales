@@ -304,6 +304,26 @@ function capturarDatos() {
             return;
         }
     }
+
+	//alert si son numeros negativos o iguales a 0
+	if (largo <= 0 || corte <= 0 || materiales.length <= 0 || cantidades.length <= 0) {
+        alert("Por favor, Ingrese un nmero mayor a 0, en el largo del material");
+		
+		// Después de agregar material, cambia la clase del botón a btn-outline-primary
+		var botonMostrarResultados = document.querySelector('.btn.btn-primary');
+		if (botonMostrarResultados) {
+			botonMostrarResultados.classList.replace('btn-primary', 'btn-outline-primary');
+		}
+		calculoRealizado = false;
+	
+        return;
+    }
+	for (var i = 0; i < materiales.length; i++) {
+        if (materiales[i].value <= 0 || cantidades[i].value <= 0) {
+            alert("Por favor, Ingrese un nmero mayor a 0, en el largo del material");
+            return;
+        }
+    }
 	
 	var totalMateriales = 0;
 	var mensajeMateriales = "";
