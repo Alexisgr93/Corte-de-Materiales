@@ -1,0 +1,85 @@
+html, body, .conteiner{
+    height: 100%;
+}
+
+
+header{
+    height: 150px;
+    width: 100%;
+}
+
+section{
+    height: 80%;
+}
+
+#footer {
+    margin-top: 10px;
+}
+
+.resultado-slide {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: white;
+    width: 100%;
+}
+
+.resultado-slide h5 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.resultado-slide p {
+    font-size: 18px;
+}
+
+.carousel-item.active .resultado-slide.active {
+    display: block;
+}
+
+.carousel-item.active .resultado-slide img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+}
+
+.resultado-slide {
+    /* ... otros estilos ... */
+    padding-top: 10px;
+    padding-bottom: 10px;
+    height: 100%; /* Agrega esta línea para ocupar toda la altura del slide */
+    display: flex; /* Agrega esta línea para usar flexbox */
+    flex-direction: column; /* Agrega esta línea para alinear verticalmente el contenido */
+    justify-content: center; /* Agrega esta línea para centrar verticalmente el contenido */
+}
+
+.scroll-container {
+    overflow-y: scroll;
+    height: 100%;
+}
+
+#color-carta {
+    position: relative;
+    top: 5%;
+    left: 50%;
+    transform: translate(-50%, 0%);
+}
+.container {
+    margin-top: 50px;
+}
+
+.card-container {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    opacity: 1;
+    transition: opacity 0.3s;
+}
+
+.card-container.show {
+    opacity: 1;
+}
