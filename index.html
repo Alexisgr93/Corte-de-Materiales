@@ -249,6 +249,7 @@
 
 <script>
 var resultadosVisible = false;
+var calculoRealizado = false;
 
 function cerrarCarta() {
   var cardContainer = document.getElementById("card-container-0");
@@ -257,21 +258,22 @@ function cerrarCarta() {
 }
 
 function mostrarDetalle(slideIndex) {
-  var resultadoSlide = document.getElementById("resultado-slide-" + slideIndex);
-  resultadoSlide.classList.toggle("active");
+    if (calculoRealizado) {
+        var resultadoSlide = document.getElementById("resultado-slide-" + slideIndex);
+        var cardContainer = document.getElementById("card-container-" + slideIndex);
 
-  var cardContainer = document.getElementById("card-container-" + slideIndex);
-
-  if (!resultadosVisible) {
-    cardContainer.style.display = "block";
-    resultadosVisible = true;
-  } else {
-    cardContainer.style.display = "none";
-    resultadosVisible = false;
-  }
-  
-  
+        if (!resultadosVisible && resultadoSlide.classList.contains("active")) {
+            cardContainer.style.display = "block";
+            resultadosVisible = true;
+        } else {
+            cardContainer.style.display = "none";
+            resultadosVisible = false;
+        }
+    } else {
+        alert("Primero debe calcular los resultados.");
+    }
 }
+
 
 
 
@@ -364,7 +366,7 @@ resultadoMateriales.innerHTML = "Materiales a cortar:<br>" + mensajeMateriales;
 	//document.getElementById("resultado").innerHTML = "El sobrante de material es: " + sobrante;
 	document.getElementById("cartas-resultantes").innerHTML = mensaje;
 
-
+	calculoRealizado = true;
 }
 
 
