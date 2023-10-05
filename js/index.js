@@ -162,12 +162,25 @@ function crearFilaTabla() {
     var celdaCantidad = document.createElement("td");
     celdaCantidad.innerHTML = '<input type="number" class="form-control" name="cantidad[]" placeholder="Cantidad a cortar"/>';
 
+    var celdaEliminar = document.createElement("td");
+    var iconoEliminar = document.createElement("i");
+    iconoEliminar.classList.add("fas", "fa-trash-alt", "text-danger", "eliminar-material");
+    iconoEliminar.addEventListener("click", function () {
+        // Aquí puedes agregar la lógica para eliminar la fila
+        fila.remove();
+    });
+    celdaEliminar.appendChild(iconoEliminar);
+
     fila.appendChild(celdaMaterial);
     fila.appendChild(celdaCantidad);
+    fila.appendChild(celdaEliminar);
 
     return fila;
-
 }
+
+
+
+
 
 function agregarMaterial() {
     var tabla = document.getElementById("tabla-materiales");
